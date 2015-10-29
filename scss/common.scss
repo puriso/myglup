@@ -1,0 +1,55 @@
+@charset "UTF-8";
+/* Scss Document */
+
+//SASS v3.4.13
+//GULP
+//  CLI version 3.9.0
+//  Local version 3.9.0
+
+//・なるべくスタイルを上書きしない。
+//・importantは最後の切り札として使う
+
+
+///////////////////////////
+//FOR ENTRY BODY ELEMENTS//
+///////////////////////////
+
+// Include
+//-----------------------------------------------------
+@import "_mixins";
+
+
+// RESET CSS
+$resetCSS :sanitize;
+@import "_reset";
+
+
+// MEDIA QUERY
+//-----------------------------------------------------
+
+/* Small Display(Phone)
+-------------------------------------------------- */
+@media screen and(max-width:$sp_size) {
+    $type: sp;
+    @import "_common_media-query";
+}
+
+/* Mid Display(Auxiliary)
+-------------------------------------------------- */
+@media screen and(max-width:$contents_w) {
+    $type: tb;
+    @import "_common_media-query";
+}
+
+/* Large Display(PC)
+-------------------------------------------------- */
+@media print, screen and (min-width:$sp_size+1) {
+    $type: pc;
+    @import "_common_media-query";
+}
+
+/* Print CSS
+-------------------------------------------------- */
+@media print {
+
+}

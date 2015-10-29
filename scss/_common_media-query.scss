@@ -1,0 +1,52 @@
+//BASIC ELEMENTS
+//------------------------------------------------------
+html{
+	height: 100%;
+    overflow-y:scroll;
+}
+body{
+	font-family: 'Meiryo','Hiragino Kaku Gothic ProN',sans-serif;
+    background-color: #fff;
+	color: $b_color;
+	font-size: 20px;
+	line-height: 1.5;
+	cursor:auto;
+	height: 100%;
+	-webkit-text-size-adjust: none;
+	@if $type == pc{
+		min-width: 940px;
+	}
+}
+
+a{
+	color: $b_color;
+	&:hover{
+		color: $b_color;
+	}
+	&:visited{
+		color: $b_color;
+	}
+
+	&:active{
+		color: $b_color;
+	}
+}
+
+img{
+	@if $type == pc{
+		width: auto;
+		height: auto;
+	}
+	@if $type == sp{
+		max-width: 100%;
+		height: auto;
+	}
+}
+
+.forPC{	@if $type == sp{display: none;}}
+.forSP{	@if $type == pc{display: none;}}
+
+
+h1{
+    font-size: 20px;
+}
