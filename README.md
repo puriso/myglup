@@ -2,9 +2,9 @@
 
 ![gulp logo](https://raw.githubusercontent.com/gulpjs/artwork/master/gulp.png)
 
-## How to use Gulp.js?
+# How to use Gulp.js?
 
-### Install node.js:
+## Install node.js:
 
 #### For Windows
 
