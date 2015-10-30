@@ -7,9 +7,14 @@
 ### Install node.js:
 
 #### For Windows
+
+Download installer and install node.js
+
 <http://nodejs.org/>
 
 #### For MacOS
+
+Install node.js with HomeBrew command.
 
 ```
 $ brew install node
