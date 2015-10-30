@@ -20,25 +20,25 @@ Install node.js with HomeBrew command.
 $ brew install node
 ```
 
-### Install gulp globally:
+## Install gulp globally:
 
 ```
 $ npm install --global gulp
 ```
 
-### Install gulp in your project devDependencies:
+## Install gulp in your project devDependencies:
 
 ```
 $ npm install --save-dev gulp
 ```
 
-### Install gulp plugins
+## Install gulp plugins
 
 ```
 $ npm install
 ```
 
-### Run gulps:
+## Run gulps:
 
 ```
 $ gulp
