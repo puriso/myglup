@@ -1,9 +1,5 @@
 "use strict";
 
-// 1. config.rb,gulpfile.js,package.jsonをプロジェクトディレクトリのルートに配置
-// 2. npm install
-// 3. X╹◡╹)っ凵^
-
 var srcPath ={
     css     :"css/**/*.css",
     scss    :"scss/**/*.scss",
@@ -28,7 +24,7 @@ var notify = require('gulp-notify');                //エラー通知
 
 gulp.task("sass", function() {
     gulp.src(srcPath["scss"])
-        .pipe(plumber({errorHandler: notify.onError('(X╹◡╹凸 [SASS ERROR] <%= error.message %>')}))
+        .pipe(plumber({errorHandler: notify.onError('(;◡;) [SASS ERROR] <%= error.message %>')}))
         .pipe(frontnote({
             css: '../css/style.css'
         }))
@@ -38,14 +34,14 @@ gulp.task("sass", function() {
 });
 gulp.task("imagemin",function(){
     gulp.src(srcPath["images"])
-        .pipe(plumber({errorHandler: notify.onError('[IMAGEMIN ERROR] <%= error.message %>')}))
+        .pipe(plumber({errorHandler: notify.onError('(;◡;) [IMAGEMIN ERROR] <%= error.message %>')}))
         .pipe(imagemin())
         .pipe(gulp.dest(srcPath.images));
 
 });
 gulp.task('cssmin', function () {
     gulp.src(srcPath.css)
-        .pipe(plumber({errorHandler: notify.onError('[CSSMIN ERROR] <%= error.message %>')}))
+        .pipe(plumber({errorHandler: notify.onError('(;◡;) [CSSMIN ERROR] <%= error.message %>')}))
         .pipe(cssmin())
         .pipe(rename({
             suffix: '.min'
