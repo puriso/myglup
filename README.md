@@ -6,13 +6,13 @@
 
 ## Install node.js:
 
-#### For Windows
+### For Windows
 
 Download installer and install node.js
 
 <http://nodejs.org/>
 
-#### For MacOS
+### For MacOS
 
 Install node.js with HomeBrew command.
 
@@ -42,4 +42,13 @@ $ npm install
 
 ```
 $ gulp
+```
+
+## How to make Gulp stop:
+
+control + c
+
+```
+$ y ↩
+
 ```

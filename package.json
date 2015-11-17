@@ -1,7 +1,7 @@
 {
   "name": "htdocs",
   "version": "1.0.0",
-  "description": "",
+  "description": "![gulp logo](https://raw.githubusercontent.com/gulpjs/artwork/master/gulp.png)",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,14 +11,25 @@
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
+    "gulp-cssmin": "^0.1.7",
     "gulp-ejs": "^1.2.1",
     "gulp-frontnote": "^1.0.2",
     "gulp-imagemin": "^2.3.0",
     "gulp-notify": "^2.2.0",
     "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.1.0",
+    "gulp-uncss": "^1.0.4",
     "gulp-webserver": "^0.9.1",
     "run-sequence": "^1.1.4"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/puriso/mygulp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/puriso/mygulp/issues"
+  },
+  "homepage": "https://github.com/puriso/mygulp#readme"
 }

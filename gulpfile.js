@@ -2,6 +2,7 @@
 
 var srcPath ={
     css     :"css/**/*.css",
+    css2    :"css/*.css",
     scss    :"scss/**/*.scss",
     images  :"images/**/*.+(jpg|jpeg|png|gif|svg)",
     js      :"scss/**/*.js",
@@ -20,7 +21,7 @@ var rename = require('gulp-rename');                //出力ファイル名変�
 var runSequence = require('run-sequence');          //並列処理
 var webserver = require('gulp-webserver');          //LIVERELOAD
 var notify = require('gulp-notify');                //エラー通知
-
+var uncss = require('gulp-uncss');                  //使用されていないセレクタを削除
 
 gulp.task("sass", function() {
     gulp.src(srcPath["scss"])
@@ -30,7 +31,7 @@ gulp.task("sass", function() {
         }))
         .pipe(sass())
         .pipe(autoprefixer())
-        .pipe(gulp.dest(srcPath.css));
+        .pipe(gulp.dest("css/"));
 });
 gulp.task("imagemin",function(){
     gulp.src(srcPath["images"])
@@ -40,13 +41,13 @@ gulp.task("imagemin",function(){
 
 });
 gulp.task('cssmin', function () {
-    gulp.src(srcPath.css)
+    gulp.src(srcPath.css2)
         .pipe(plumber({errorHandler: notify.onError('(;◡;) [CSSMIN ERROR] <%= error.message %>')}))
         .pipe(cssmin())
         .pipe(rename({
             suffix: '.min'
         }))
-        .pipe(gulp.dest("css/"));
+        .pipe(gulp.dest("css/dist/"));
 });
 gulp.task('webserver', function() {
   gulp.src('./')
@@ -63,8 +64,18 @@ gulp.task("ejs", function() {
     )
         .pipe(plumber({errorHandler: notify.onError('<%= error.message %>')}))
         .pipe(ejs())
-        .pipe(gulp.dest("app/public"))
+        .pipe(gulp.dest("app/public"));
 });
+
+gulp.task('uncss', function () {
+    return gulp.src('css/*.css')
+        .pipe(uncss({
+            html: ['./*.html', 'second/*.html'], //URL指定の可能
+            ignore: ['.reset','',/^\.*__*/, /^\.is\-/, /^\.bx*/]//IGNORE:正規表現も可能
+        }))
+        .pipe(gulp.dest('./uncss'));
+});
+
 
 //DEFAULT
 gulp.task("watch", function() {

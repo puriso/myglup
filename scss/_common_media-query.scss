@@ -17,7 +17,6 @@ body{
 		min-width: 940px;
 	}
 }
-
 a{
 	color: $b_color;
 	&:hover{
@@ -26,12 +25,10 @@ a{
 	&:visited{
 		color: $b_color;
 	}
-
 	&:active{
 		color: $b_color;
 	}
 }
-
 img{
 	@if $type == pc{
 		width: auto;
@@ -43,10 +40,10 @@ img{
 	}
 }
 
-.forPC{	@if $type == sp{display: none;}}
-.forSP{	@if $type == pc{display: none;}}
+.forPC{	@if $type == sp{display: none!important;}}
+.forSP{	@if $type == pc{display: none!important;}}
 
-
+//--------------------------------------------------
 h1{
     font-size: 20px;
 }

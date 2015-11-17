@@ -1,6 +1,5 @@
 @charset "UTF-8";
 /* Scss Document */
-
 //SASS v3.4.13
 //GULP
 //  CLI version 3.9.0
@@ -8,7 +7,6 @@
 
 //・なるべくスタイルを上書きしない。
 //・importantは最後の切り札として使う
-
 
 ///////////////////////////
 //FOR ENTRY BODY ELEMENTS//
@@ -51,5 +49,4 @@ $resetCSS :sanitize;
 /* Print CSS
 -------------------------------------------------- */
 @media print {
-
 }
