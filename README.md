@@ -43,8 +43,3 @@ $ npm install
 ```
 $ gulp
 ```
-
-## How to make Gulp stop:
-
-control + c
-
