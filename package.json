@@ -19,17 +19,16 @@
     "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.1.0",
+    "gulp-uglify": "^1.5.1",
     "gulp-uncss": "^1.0.4",
     "gulp-webserver": "^0.9.1",
     "run-sequence": "^1.1.4"
   },
   "dependencies": {},
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/puriso/mygulp.git"
   },
   "bugs": {
-    "url": "https://github.com/puriso/mygulp/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/puriso/mygulp#readme"
+  "homepage": ""
 }
