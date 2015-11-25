@@ -1,5 +1,7 @@
 "use strict";
-
+/*------------------------------------------------------------
+ * require
+ -----------------------------------------------------------*/
 var gulp = require("gulp");
 var sass = require("gulp-sass");                    //SASS
 var autoprefixer = require("gulp-autoprefixer");    //ベンダープレフィックス付与
@@ -17,8 +19,22 @@ var uncss = require('gulp-uncss');                  //使用されているセ�
 var prettify = require('gulp-prettify')             //HTML整形
 var minifyHTML = require('gulp-minify-html');       //HTML圧縮 & HTML Inline圧縮
 var minifyInline = require('gulp-minify-inline');   //HTML Inline圧縮
+var ftp = require('gulp-ftp');                      //FTPへデプロイ
+var gutil = require('gulp-util');
 
-//パス設定
+/*------------------------------------------------------------
+ * PATH設定
+ -----------------------------------------------------------*/
+//FTP(for Private repository)
+var ftpInfo={
+    host        :"",
+    user        :"",
+    pass        :"",
+    remotePath  :"",
+    uploadPath  :"",
+};
+
+//各ファイルPATH設定
 var path ={
     css:{
         dir  :"css/",
@@ -52,7 +68,7 @@ var path ={
         ],
         watch:[
             "*.ejs",
-            "./second/**/*.ejs",
+            "second/**/*.ejs",
             "!**/_*.ejs",
         ],
         dist :"dist/",
@@ -65,7 +81,7 @@ var path ={
             "!node_modules/"
         ],
         watch:[
-            "./**/*.html",
+            "**/*.html",
             "!dist/",
             "!node_modules/"
         ],
@@ -73,7 +89,10 @@ var path ={
     }
 };
 
-//タスク
+
+/*------------------------------------------------------------
+ * TASKS
+ -----------------------------------------------------------*/
 gulp.task("sass", function() {
     gulp.src(path.scss.src)
         .pipe(plumber({errorHandler: notify.onError('(;◡;) [SASS ERROR] <%= error.message %>')}))
@@ -130,47 +149,62 @@ gulp.task('uncss', function () {
         .pipe(gulp.dest(path.css.src));
 });
 gulp.task('prettify', function() {
-  gulp.src(path.html.src)
-    .pipe(prettify({indent_size: 4}))
-    .pipe(gulp.dest(path.html.dist));
+    gulp.src(path.html.src)
+        .pipe(prettify({indent_size: 4}))
+        .pipe(gulp.dest(path.html.dist));
 });
 gulp.task('minify-html', function() {
-  var opts = {
-    conditionals: true,
-    spare:true
-  };
-  return gulp.src(path.html.dist+"**/*.html")
-    .pipe(minifyHTML(opts))
-    .pipe(minifyInline())
-    .pipe(gulp.dest(path.html.dist));
+    var opts = {
+        conditionals: true,
+        spare:true
+    };
+    return gulp.src(path.html.dist+"**/*.html")
+        .pipe(minifyHTML(opts))
+        .pipe(minifyInline())
+        .pipe(gulp.dest(path.html.dist));
 });
 gulp.task('minify-inline', function() {
-  gulp.src(path.html.dist+"**/*.html")
-    .pipe(minifyInline())
-    .pipe(gulp.dest(path.html.dist));
+    gulp.src(path.html.dist+"**/*.html")
+        .pipe(minifyInline())
+        .pipe(gulp.dest(path.html.dist));
+});
+gulp.task('ftp', function () {
+    return gulp.src(ftpInfo.uploadPath)
+        .pipe(ftp({
+            host        : ftpInfo.host,
+            user        : ftpInfo.user,
+            pass        : ftpInfo.pass,
+            remotePath  : ftpInfo.remotePath
+        }))
+    // you need to have some kind of stream after gulp-ftp to make sure it's flushed
+    // this can be a gulp plugin, gulp.dest, or any kind of stream
+    // here we use a passthrough stream
+    .pipe(gutil.noop());
 });
 
-//監視タスク
-gulp.task("watch", function() {
-    gulp.watch(path.scss.watch,function(){
-        gulp.start("sass");
+/*------------------------------------------------------------
+ * WATCH TASKS
+ -----------------------------------------------------------*/
+    gulp.task("watch", function() {
+        gulp.watch(path.scss.watch,function(){
+            gulp.start("sass");
+        });
+        gulp.watch(path.css.watch,function(){
+            gulp.start("cssmin");
+        });
+        gulp.watch(path.js.watch,function(){
+            gulp.start("uglify");
+        });
+        /*
+           gulp.watch(path.html.watch,function(){
+           gulp.start("minify-html");
+           });
+           */
+        gulp.watch(path.ejs.watch,function(){
+            gulp.start("ejs");
+        });
+        //gulp.watch(path.image.src,["imagemin"]);
     });
-    gulp.watch(path.css.watch,function(){
-        gulp.start("cssmin");
-    });
-    gulp.watch(path.js.watch,function(){
-        gulp.start("uglify");
-    });
-    /*
-    gulp.watch(path.html.watch,function(){
-        gulp.start("minify-html");
-    });
-    */
-    gulp.watch(path.ejs.watch,function(){
-        gulp.start("ejs");
-    });
-    //gulp.watch(path.image.src,["imagemin"]);
-});
 gulp.task("default", [
         "watch",
         "sass",
