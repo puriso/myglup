@@ -15,6 +15,8 @@ var webserver = require('gulp-webserver');          //LIVERELOAD
 var notify = require('gulp-notify');                //エラー通知
 var uncss = require('gulp-uncss');                  //使用されていないセレクタを削除
 var prettify = require('gulp-prettify')             //HTML整形
+var minifyHTML = require('gulp-minify-html');       //HTML圧縮 & HTML Inline圧縮
+var minifyInline = require('gulp-minify-inline');   //HTML Inline圧縮
 
 //パス設定
 var path ={
@@ -37,19 +39,36 @@ var path ={
         dist :"dist/images/"
     },
     js:{
-        dir  :"js/",
-        src  :"js/**/*.js",
-        watch:"js/**/*.js",
+        dir  :["js/","!node_modules/"],
+        src  :["js/**/*.js","!node_modules/"],
+        watch:["js/**/*.js","!node_modules/"],
         dist :"dist/js/"
     },
     ejs:{
-        src  :["*.ejs","!**/_*.ejs"],
-        watch:"*.ejs",
-        dist :"./",
+        src  :[
+            "*.ejs",
+            "./second/**/*.ejs",
+            "!**/_*.ejs",
+        ],
+        watch:[
+            "*.ejs",
+            "./second/**/*.ejs",
+            "!**/_*.ejs",
+        ],
+        dist :"dist/",
     },
     html:{
-        src  :"*.html",
-        watch:"*.html",
+        src  :[
+            "./*.html",
+            "second/**/*.html",
+            "!dist/",
+            "!node_modules/"
+        ],
+        watch:[
+            "./**/*.html",
+            "!dist/",
+            "!node_modules/"
+        ],
         dist :"dist/"
     }
 };
@@ -110,7 +129,22 @@ gulp.task('uncss', function () {
 gulp.task('prettify', function() {
   gulp.src(path.html.src)
     .pipe(prettify({indent_size: 4}))
-    .pipe(gulp.dest(path.html.dist))
+    .pipe(gulp.dest(path.html.dist));
+});
+gulp.task('minify-html', function() {
+  var opts = {
+    conditionals: true,
+    spare:true
+  };
+  return gulp.src(path.html.dist+"**/*.html")
+    .pipe(minifyHTML(opts))
+    .pipe(minifyInline())
+    .pipe(gulp.dest(path.html.dist));
+});
+gulp.task('minify-inline', function() {
+  gulp.src(path.html.dist+"**/*.html")
+    .pipe(minifyInline())
+    .pipe(gulp.dest(path.html.dist));
 });
 
 //監視タスク
@@ -124,17 +158,21 @@ gulp.task("watch", function() {
     gulp.watch(path.js.watch,function(){
         gulp.start("uglify");
     });
+    gulp.watch(path.html.watch,function(){
+        gulp.start("minify-html");
+    });
     gulp.watch(path.ejs.watch,function(){
         gulp.start("ejs");
     });
     //gulp.watch(path.image.src,["imagemin"]);
 });
 gulp.task("default", [
-        "webserver",
         "watch",
         "sass",
         "cssmin",
         "uglify",
         "ejs",
-        "imagemin",
+        //"minify-html",
+        //"imagemin",
+        "webserver",
 ]);
