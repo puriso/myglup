@@ -104,7 +104,7 @@ gulp.task('uglify', function(){
         .pipe(gulp.dest(path.js.dist));
 });
 gulp.task('webserver', function() {
-    gulp.src('./')
+    gulp.src(path.html.dist)
         .pipe(webserver({
             livereload: true,
             port: 8001,
