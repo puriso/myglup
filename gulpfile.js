@@ -74,7 +74,7 @@ gulp.task('cssmin', function () {
 });
 gulp.task('uglify', function(){
     gulp.src(path.js.src)
-        .pipe(plumber({errorHandler: notify.onError('[UGLIFY ERROR] <%= error.message %>')}))
+        .pipe(plumber({errorHandler: notify.onError('(;◡;) [UGLIFY ERROR] <%= error.message %>')}))
         .pipe(uglify({preserveComments: 'some'}))
         .pipe(gulp.dest(path.js.dist));
 });
@@ -89,7 +89,7 @@ gulp.task('webserver', function() {
 });
 gulp.task("ejs", function() {
     gulp.src(path.ejs.src)
-        .pipe(plumber({errorHandler: notify.onError('<%= error.message %>')}))
+        .pipe(plumber({errorHandler: notify.onError('(;◡;) [EJS ERROR]<%= error.message %>')}))
         .pipe(ejs())
         .pipe(gulp.dest(path.ejs.dist));
 });
