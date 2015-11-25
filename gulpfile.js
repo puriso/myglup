@@ -13,7 +13,7 @@ var rename = require('gulp-rename');                //出力ファイル名変�
 var runSequence = require('run-sequence');          //並列処理
 var webserver = require('gulp-webserver');          //LIVERELOAD
 var notify = require('gulp-notify');                //エラー通知
-var uncss = require('gulp-uncss');                  //使用されていないセレクタを削除
+var uncss = require('gulp-uncss');                  //使用されているセレクタのみを生成
 var prettify = require('gulp-prettify')             //HTML整形
 var minifyHTML = require('gulp-minify-html');       //HTML圧縮 & HTML Inline圧縮
 var minifyInline = require('gulp-minify-inline');   //HTML Inline圧縮
@@ -124,6 +124,9 @@ gulp.task('uncss', function () {
                           html: ['./*.html', 'second/*.html'], //URL指定の可能
                           ignore: ['.reset','',/^\.*__*/, /^\.is\-/, /^\.bx*/]//IGNORE:正規表現も可能
     }))
+        .pipe(rename({
+            extname: '.un.css'
+        }))
         .pipe(gulp.dest(path.css.src));
 });
 gulp.task('prettify', function() {
@@ -158,9 +161,11 @@ gulp.task("watch", function() {
     gulp.watch(path.js.watch,function(){
         gulp.start("uglify");
     });
+    /*
     gulp.watch(path.html.watch,function(){
         gulp.start("minify-html");
     });
+    */
     gulp.watch(path.ejs.watch,function(){
         gulp.start("ejs");
     });
