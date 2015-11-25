@@ -14,6 +14,7 @@ var runSequence = require('run-sequence');          //並列処理
 var webserver = require('gulp-webserver');          //LIVERELOAD
 var notify = require('gulp-notify');                //エラー通知
 var uncss = require('gulp-uncss');                  //使用されていないセレクタを削除
+var prettify = require('gulp-prettify')             //HTML整形
 
 //パス設定
 var path ={
@@ -46,6 +47,11 @@ var path ={
         watch:"*.ejs",
         dist :"./",
     },
+    html:{
+        src  :"*.html",
+        watch:"*.html",
+        dist :"dist/"
+    }
 };
 
 //タスク
@@ -100,6 +106,11 @@ gulp.task('uncss', function () {
                           ignore: ['.reset','',/^\.*__*/, /^\.is\-/, /^\.bx*/]//IGNORE:正規表現も可能
     }))
         .pipe(gulp.dest(path.css.src));
+});
+gulp.task('prettify', function() {
+  gulp.src(path.html.src)
+    .pipe(prettify({indent_size: 4}))
+    .pipe(gulp.dest(path.html.dist))
 });
 
 //監視タスク
