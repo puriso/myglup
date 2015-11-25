@@ -1,0 +1,73 @@
+<%
+/* EJS sample */
+var sample = "gulp";
+var images = {
+    src:"https://raw.githubusercontent.com/gulpjs/artwork/master/gulp.png",
+    alt:"Logo"
+    };
+%>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Gulp.js and EJS sample</title>
+        <style>
+            <%
+                var themeColor = "#eb4a4b";
+            %>
+            body{
+                font-family:'Lucida Grande','Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+                margin:0;
+                padding:0;
+            }
+            header{
+                color:#FFF;
+                background:<%= themeColor %>;
+                padding:20px 0;
+                text-align:center;
+            }
+            #container{
+                padding: 0 0 20px;
+            }
+            h2{
+                border-bottom:1px solid #ccc;
+                line-height:1.5;
+                font-weight:normal;
+            }
+            ul.links{
+                list-style-type: square;
+                margin:0 0 0 20px;
+                padding:0;
+            }
+            .logo{
+                text-align:center;
+            }
+            .main{
+                width:80%;
+                max-width:640px;
+                margin: auto;
+                font-size:80%;
+                padding:10px 0 20px;
+            }
+            .main p{
+                margin: 0 0 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <header>
+                <h1>Welcome to <%= sample %>.js!</h1>
+                <p>Automate and enhance your workflow</p>
+            </header>
+            <p class="logo"><img src="<%= images.src %>" alt="<%= images.alt %>"></p>
+            <div class="main">
+                <% include ejs/_include %>
+                <ul class="links">
+                    <li>GitHub : <a href="https://github.com/gulpjs/gulp"> https://github.com/gulpjs/gulp </a></li>
+                    <li>WebSite : <a href="http://gulpjs.com/"> https://github.com/gulpjs/gulp </a></li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>
