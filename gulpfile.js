@@ -18,24 +18,33 @@ var uncss = require('gulp-uncss');                  //使用されていない�
 //パス設定
 var path ={
     css:{
-        dir :"css/",
-        src :"css/**/*.css",
-        dist:"dist/css/"
+        dir  :"css/",
+        src  :"css/**/*.css",
+        watch:"css/**/*.css",
+        dist :"dist/css/"
     },
     scss:{
-        dir :"scss/",
-        src :"scss/**/*.scss",
-        dist:"css/"
+        dir  :"scss/",
+        src  :"scss/**/*.scss",
+        watch:"scss/**/*.scss",
+        dist :"css/"
     },
     image:{
-        dir :"images/",
-        src :"images/**/*.+(jpg|jpeg|png|gif|svg)",
-        dist:"dist/images/"
+        dir  :"images/",
+        src  :"images/**/*.+(jpg|jpeg|png|gif|svg)",
+        watch:"images/**/*.+(jpg|jpeg|png|gif|svg)",
+        dist :"dist/images/"
     },
     js:{
-        dir :"js/",
-        src :"js/**/*.js",
-        dist:"dist/js/"
+        dir  :"js/",
+        src  :"js/**/*.js",
+        watch:"js/**/*.js",
+        dist :"dist/js/"
+    },
+    ejs:{
+        src  :["*.ejs","!**/_*.ejs"],
+        watch:"*.ejs",
+        dist :"./",
     },
 };
 
@@ -79,12 +88,10 @@ gulp.task('webserver', function() {
         }));
 });
 gulp.task("ejs", function() {
-    gulp.src(
-            ["*.ejs",'!' + "_*.ejs"]
-            )
+    gulp.src(path.ejs.src)
         .pipe(plumber({errorHandler: notify.onError('<%= error.message %>')}))
         .pipe(ejs())
-        .pipe(gulp.dest("app/public"));
+        .pipe(gulp.dest(path.ejs.dist));
 });
 gulp.task('uncss', function () {
     return gulp.src('css/*.css')
@@ -97,14 +104,17 @@ gulp.task('uncss', function () {
 
 //監視タスク
 gulp.task("watch", function() {
-    gulp.watch(path.scss.src,function(){
+    gulp.watch(path.scss.watch,function(){
         gulp.start("sass");
     });
-    gulp.watch(path.css.src,function(){
+    gulp.watch(path.css.watch,function(){
         gulp.start("cssmin");
     });
-    gulp.watch(path.js.src,function(){
+    gulp.watch(path.js.watch,function(){
         gulp.start("uglify");
+    });
+    gulp.watch(path.ejs.watch,function(){
+        gulp.start("ejs");
     });
     //gulp.watch(path.image.src,["imagemin"]);
 });
@@ -114,5 +124,6 @@ gulp.task("default", [
         "sass",
         "cssmin",
         "uglify",
-        "imagemin"
+        "ejs",
+        "imagemin",
 ]);
