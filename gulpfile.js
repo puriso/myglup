@@ -26,7 +26,7 @@ var gutil = require('gulp-util');
  * PATH設定
  -----------------------------------------------------------*/
 //FTP(for Private repository)
-var ftpInfo={
+var ftpInfo ={
     host        :"",
     user        :"",
     pass        :"",
@@ -185,26 +185,26 @@ gulp.task('ftp', function () {
 /*------------------------------------------------------------
  * WATCH TASKS
  -----------------------------------------------------------*/
-    gulp.task("watch", function() {
-        gulp.watch(path.scss.watch,function(){
-            gulp.start("sass");
-        });
-        gulp.watch(path.css.watch,function(){
-            gulp.start("cssmin");
-        });
-        gulp.watch(path.js.watch,function(){
-            gulp.start("uglify");
-        });
-        /*
-           gulp.watch(path.html.watch,function(){
-           gulp.start("minify-html");
-           });
-           */
-        gulp.watch(path.ejs.watch,function(){
-            gulp.start("ejs");
-        });
-        //gulp.watch(path.image.src,["imagemin"]);
+gulp.task("watch", function() {
+    gulp.watch(path.scss.watch,function(){
+        gulp.start("sass");
     });
+    gulp.watch(path.css.watch,function(){
+        gulp.start("cssmin");
+    });
+    gulp.watch(path.js.watch,function(){
+        gulp.start("uglify");
+    });
+    /*
+       gulp.watch(path.html.watch,function(){
+       gulp.start("minify-html");
+       });
+       */
+    gulp.watch(path.ejs.watch,function(){
+        gulp.start("ejs");
+    });
+    //gulp.watch(path.image.src,["imagemin"]);
+});
 gulp.task("default", [
         "watch",
         "sass",
