@@ -4,6 +4,20 @@ html{
 	height: 100%;
     overflow-y:scroll;
 }
+
+/*
+#styleguide
+body
+
+@depulicated
+@非推奨
+@todo
+@your-attribute
+
+```
+sample code here.
+```
+*/
 body{
 	font-family: 'Meiryo','Hiragino Kaku Gothic ProN',sans-serif;
     background-color: #fff;
@@ -39,7 +53,6 @@ img{
 		height: auto;
 	}
 }
-
 .forPC{	@if $type == sp{display: none!important;}}
 .forSP{	@if $type == pc{display: none!important;}}
 

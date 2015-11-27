@@ -1,16 +1,11 @@
 @charset "UTF-8";
-/* Scss Document */
-//SASS v3.4.13
-//GULP
-//  CLI version 3.9.0
-//  Local version 3.9.0
+/*
+#overview
+common.css
 
-//・なるべくスタイルを上書きしない。
-//・importantは最後の切り札として使う
+comment
+*/
 
-
-// Include
-//-----------------------------------------------------
 @import "_mixins";
 
 
@@ -21,21 +16,21 @@ $resetCSS :sanitize;
 // MEDIA QUERY
 //-----------------------------------------------------
 
-/* Small Display(Phone)
+/* Small Display
 -------------------------------------------------- */
 @media screen and(max-width:$sp_size) {
     $type: sp;
     @import "_common_media-query";
 }
 
-/* Mid Display(Auxiliary)
+/* Middle Display
 -------------------------------------------------- */
 @media screen and(max-width:$contents_w) {
     $type: tb;
     @import "_common_media-query";
 }
 
-/* Large Display(PC)
+/* Large Display
 -------------------------------------------------- */
 @media print, screen and (min-width:$sp_size+1) {
     $type: pc;
