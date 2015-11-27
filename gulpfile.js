@@ -3,24 +3,11 @@
  * require
  -----------------------------------------------------------*/
 var gulp = require("gulp");
-var sass = require("gulp-sass");                    //SASS
-var autoprefixer = require("gulp-autoprefixer");    //ベンダープレフィックス付与
-var frontnote = require("gulp-frontnote");          //スタイルガイド生成
-var plumber = require("gulp-plumber");              //エラー対策
-var imagemin = require('gulp-imagemin');            //画像圧縮
-var ejs = require('gulp-ejs');                      //EJS
-var cssmin = require('gulp-cssmin');                //CSS圧縮
-var uglify = require('gulp-uglify');                //JS圧縮
-var rename = require('gulp-rename');                //出力ファイル名変更
-var runSequence = require('run-sequence');          //並列処理
-var webserver = require('gulp-webserver');          //LIVERELOAD
-var notify = require('gulp-notify');                //エラー通知
-var uncss = require('gulp-uncss');                  //使用されているセレクタのみを生成
-var prettify = require('gulp-prettify')             //HTML整形
-var minifyHTML = require('gulp-minify-html');       //HTML圧縮 & HTML Inline圧縮
-var minifyInline = require('gulp-minify-inline');   //HTML Inline圧縮
-var ftp = require('gulp-ftp');                      //FTPへデプロイ
-var gutil = require('gulp-util');
+var $ = require("gulp-load-plugins")({
+    pattern: ["gulp-*", "gulp.*"],
+    replaceString: /\bgulp[\-.]/
+});
+var browser = require("browser-sync");
 
 /*------------------------------------------------------------
  * PATH設定
@@ -40,7 +27,12 @@ var path ={
         dir  :"css/",
         src  :"css/**/*.css",
         watch:"css/**/*.css",
-        dist :"dist/css/"
+        dist :"dist/css/",
+        uncss:{
+            html    : ["./*.html", "second/*.html"], //URL指定の可能
+            ignore  : [".reset","",/^\.*__*/, /^\.is\-/, /^\.bx*/],//IGNORE:正規表現も可能
+            rename  : ".un.css"
+        }
     },
     scss:{
         dir  :"scss/",
@@ -63,13 +55,14 @@ var path ={
     ejs:{
         src  :[
             "*.ejs",
-            "./second/**/*.ejs",
+            "second/**/*.ejs",
+            "ejs/**/*.ejs",
             "!**/_*.ejs",
         ],
         watch:[
             "*.ejs",
             "second/**/*.ejs",
-            "!**/_*.ejs",
+            "ejs/**/*.ejs",
         ],
         dist :"dist/",
     },
@@ -86,132 +79,134 @@ var path ={
             "!node_modules/"
         ],
         dist :"dist/"
-    }
-};
+    },
 
+};
 
 /*------------------------------------------------------------
  * TASKS
  -----------------------------------------------------------*/
-gulp.task("sass", function() {
-    gulp.src(path.scss.src)
-        .pipe(plumber({errorHandler: notify.onError('(;◡;) [SASS ERROR] <%= error.message %>')}))
-        .pipe(frontnote({
-            css: '../css/style.css'
-        }))
-    .pipe(sass())
-        .pipe(autoprefixer())
-        .pipe(gulp.dest(path.scss.dist));
-});
-gulp.task("imagemin",function(){
-    gulp.src(path.image.src)
-        .pipe(plumber({errorHandler: notify.onError('(;◡;) [IMAGEMIN ERROR] <%= error.message %>')}))
-        .pipe(imagemin())
-        .pipe(gulp.dest(path.image.dist));
 
-});
-gulp.task('cssmin', function () {
+    /*
+     * CSS Task
+     */
+    gulp.task("sass", function () {
+        return gulp.src(path.scss.src)
+            .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [SASS ERROR] <%= error.message %>")}))
+            .pipe($.sass())
+            .pipe($.autoprefixer())
+            .pipe(gulp.dest(path.scss.dist));
+    });
+gulp.task("cssmin", function () {
     gulp.src(path.css.src)
-        .pipe(plumber({errorHandler: notify.onError('(;◡;) [CSSMIN ERROR] <%= error.message %>')}))
-        .pipe(cssmin())
+        .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [CSSMIN ERROR] <%= error.message %>")}))
+        .pipe($.cssmin())
         .pipe(gulp.dest(path.css.dist));
 });
-gulp.task('uglify', function(){
-    gulp.src(path.js.src)
-        .pipe(plumber({errorHandler: notify.onError('(;◡;) [UGLIFY ERROR] <%= error.message %>')}))
-        .pipe(uglify({preserveComments: 'some'}))
-        .pipe(gulp.dest(path.js.dist));
+gulp.task("uncss", function () {
+    return gulp.src("css/*.css")
+
+        .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [UNCSS ERROR] <%= error.message %>")}))
+        .pipe($.uncss(path.css.uncss))
+        .pipe($.rename({
+            extname: path.css.uncss.rename
+        }))
+    .pipe(gulp.dest(path.css.dist));
 });
-gulp.task('webserver', function() {
-    gulp.src(path.html.dist)
-        .pipe(webserver({
-            livereload: true,
-            port: 8001,
-            fsrcback: 'index.html',
-            open: true
-        }));
-});
+
+
+/*
+ * Image
+ */
+    gulp.task("imagemin",function(){
+        gulp.src(path.image.src)
+            .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [IMAGEMIN ERROR] <%= error.message %>")}))
+            .pipe($.imagemin())
+            .pipe(gulp.dest(path.image.dist));
+    });
+
+/*
+ * JavaScript
+ */
+            gulp.task("uglify", function(){
+                gulp.src(path.js.src)
+                    .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [UGLIFY(JS File) ERROR] <%= error.message %>")}))
+                    .pipe($.uglify({preserveComments: "some"}))
+                    .pipe(gulp.dest(path.js.dist));
+            });
+
+/*
+ * HTML
+ */
+    gulp.task("htmlmin", function() {
+        var opts = {
+            conditionals: true,
+            spare:true
+        };
+        return gulp.src(path.html.dist+"**/*.html")
+            .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [HTMLMIN ERROR]<%= error.message %>")}))
+            .pipe($.minifyHTML(opts))
+            .pipe($.minifyInline())
+            .pipe(gulp.dest(path.html.dist));
+    });
 gulp.task("ejs", function() {
     gulp.src(path.ejs.src)
-        .pipe(plumber({errorHandler: notify.onError('(;◡;) [EJS ERROR]<%= error.message %>')}))
-        .pipe(ejs())
+        .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [EJS ERROR]<%= error.message %>")}))
+        .pipe($.ejs())
         .pipe(gulp.dest(path.ejs.dist));
 });
-gulp.task('uncss', function () {
-    return gulp.src('css/*.css')
-                          .pipe(uncss({
-                          html: ['./*.html', 'second/*.html'], //URL指定の可能
-                          ignore: ['.reset','',/^\.*__*/, /^\.is\-/, /^\.bx*/]//IGNORE:正規表現も可能
-    }))
-        .pipe(rename({
-            extname: '.un.css'
-        }))
-        .pipe(gulp.dest(path.css.src));
+
+
+/*
+ * Browser
+ */
+    gulp.task("start_server", function() {
+        browser.init(null, {
+            server: {
+                baseDir: path.html.dist
+            }
+        });
+    });
+gulp.task("reload_server", function () {
+    browser.reload();
 });
-gulp.task('prettify', function() {
-    gulp.src(path.html.src)
-        .pipe(prettify({indent_size: 4}))
-        .pipe(gulp.dest(path.html.dist));
-});
-gulp.task('minify-html', function() {
-    var opts = {
-        conditionals: true,
-        spare:true
-    };
-    return gulp.src(path.html.dist+"**/*.html")
-        .pipe(minifyHTML(opts))
-        .pipe(minifyInline())
-        .pipe(gulp.dest(path.html.dist));
-});
-gulp.task('minify-inline', function() {
-    gulp.src(path.html.dist+"**/*.html")
-        .pipe(minifyInline())
-        .pipe(gulp.dest(path.html.dist));
-});
-gulp.task('ftp', function () {
+
+
+/*
+ * FTP
+ */
+gulp.task("ftp", function () {
     return gulp.src(ftpInfo.uploadPath)
-        .pipe(ftp({
+        .pipe($.plumber({errorHandler: $.notify.onError("[FTP ERROR]<%= error.message %>")}))
+        .pipe($.ftp({
             host        : ftpInfo.host,
             user        : ftpInfo.user,
             pass        : ftpInfo.pass,
             remotePath  : ftpInfo.remotePath
         }))
-    // you need to have some kind of stream after gulp-ftp to make sure it's flushed
+    // you need to have some kind of stream after gulp-ftp to make sure it"s flushed
     // this can be a gulp plugin, gulp.dest, or any kind of stream
     // here we use a passthrough stream
-    .pipe(gutil.noop());
+    .pipe($.gutil.noop());
 });
 
 /*------------------------------------------------------------
  * WATCH TASKS
  -----------------------------------------------------------*/
-gulp.task("watch", function() {
-    gulp.watch(path.scss.watch,function(){
-        gulp.start("sass");
-    });
-    gulp.watch(path.css.watch,function(){
-        gulp.start("cssmin");
-    });
-    gulp.watch(path.js.watch,function(){
-        gulp.start("uglify");
-    });
-    /*
-       gulp.watch(path.html.watch,function(){
-       gulp.start("minify-html");
-       });
-       */
-    gulp.watch(path.ejs.watch,function(){
-        gulp.start("ejs");
-    });
-    //gulp.watch(path.image.src,["imagemin"]);
-});
-gulp.task("default", [
-        "watch",
-        "sass",
-        "cssmin",
-        "uglify",
-        "ejs",
-        //"minify-html",
-        //"imagemin",
-        "webserver",
-]);
+    gulp.task('default', [
+            "sass",
+            "cssmin",
+            "uglify",
+            "ejs",
+            //"html-min",
+            //"imagemin",
+            "start_server"
+    ], function () {
+        gulp.watch(path.scss.watch,["sass","reload_server"]);
+        gulp.watch(path.css.watch,["cssmin","reload_server"]);
+        gulp.watch(path.js.watch,["uglify","reload_server"]);
+        //gulp.watch(path.html.watch,["htmlmin","reload_server"]);
+        //gulp.watch(path.image.src,["imagemin","reload_server"]);
+        gulp.watch(path.ejs.watch,["ejs","reload_server"]);
+    }
+    );
