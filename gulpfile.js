@@ -193,20 +193,20 @@ gulp.task("ftp", function () {
 /*------------------------------------------------------------
  * WATCH TASKS
  -----------------------------------------------------------*/
-    gulp.task('default', [
-            "sass",
-            "cssmin",
-            "uglify",
-            "ejs",
-            //"html-min",
-            //"imagemin",
-            "start_server"
-    ], function () {
-        gulp.watch(path.scss.watch,["sass","reload_server"]);
-        gulp.watch(path.css.watch,["cssmin","reload_server"]);
-        gulp.watch(path.js.watch,["uglify","reload_server"]);
-        //gulp.watch(path.html.watch,["htmlmin","reload_server"]);
-        //gulp.watch(path.image.src,["imagemin","reload_server"]);
-        gulp.watch(path.ejs.watch,["ejs","reload_server"]);
-    }
-    );
+gulp.task('default', [
+        "sass",
+        "cssmin",
+        "uglify",
+        "ejs",
+        //"html-min",
+        //"imagemin",
+        "start_server"
+], function () {
+    gulp.watch(path.scss.watch,["sass","reload_server"]);
+    gulp.watch(path.css.watch,["cssmin","reload_server"]);
+    gulp.watch(path.js.watch,["uglify","reload_server"]);
+    //gulp.watch(path.html.watch,["htmlmin","reload_server"]);
+    //gulp.watch(path.image.src,["imagemin","reload_server"]);
+    gulp.watch(path.ejs.watch,["ejs","reload_server"]);
+}
+);
