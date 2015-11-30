@@ -21,7 +21,7 @@ sample code here.
 body{
 	font-family: 'Meiryo','Hiragino Kaku Gothic ProN',sans-serif;
     background-color: #fff;
-	color: $b_color;
+	color: $color_font;
 	font-size: 20px;
 	line-height: 1.5;
 	cursor:auto;
@@ -32,15 +32,15 @@ body{
 	}
 }
 a{
-	color: $b_color;
+	color: $color_link;
 	&:hover{
-		color: $b_color;
+		color: $color_link_h;
 	}
 	&:visited{
-		color: $b_color;
+		color: $color_link;
 	}
 	&:active{
-		color: $b_color;
+		color: $color_link;
 	}
 }
 img{

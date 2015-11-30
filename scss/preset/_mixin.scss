@@ -1,0 +1,9 @@
+//Mixins
+
+//Cross Browser Opacity
+@mixin opacity($percent) {
+	opacity: $per * 0.01;
+	filter: alpha(opacity=$percent);        //IE lt 8
+	-ms-filter: "alpha(opacity=#{$percent})";  //IE 8
+
+}

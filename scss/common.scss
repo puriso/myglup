@@ -6,33 +6,35 @@ common.css
 comment
 */
 
-@import "_mixins";
+@import "preset/_mixin";
 
 
 // RESET CSS
 $resetCSS :sanitize;
-@import "_reset";
+@import "preset/_reset";
+@import "preset/_variable";
+@import "preset/_mixin";
 
 // MEDIA QUERY
 //-----------------------------------------------------
 
 /* Small Display
 -------------------------------------------------- */
-@media screen and(max-width:$sp_size) {
+@media screen and(max-width:$breakpoint_sp) {
     $type: sp;
     @import "_common_media-query";
 }
 
 /* Middle Display
 -------------------------------------------------- */
-@media screen and(max-width:$contents_w) {
+@media screen and(max-width:$breakpoint_tb) {
     $type: tb;
     @import "_common_media-query";
 }
 
 /* Large Display
 -------------------------------------------------- */
-@media print, screen and (min-width:$sp_size+1) {
+@media print, screen and (min-width:$breakpoint_pc) {
     $type: pc;
     @import "_common_media-query";
 }
