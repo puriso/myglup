@@ -51,6 +51,7 @@ var images = {
                 margin: 0 0 30px;
             }
         </style>
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css " rel="stylesheet">
     </head>
     <body>
         <div id="container">
@@ -61,10 +62,13 @@ var images = {
             <p class="logo"><img src="<%= images.src %>" alt="<%= images.alt %>"></p>
             <div class="main">
                 <% include ejs/_include %>
+
+                <h2>Links</h2>
                 <ul class="links">
-                    <li>GitHub : <a href="https://github.com/gulpjs/gulp"> https://github.com/gulpjs/gulp </a></li>
-                    <li>Gulp   : <a href="http://gulpjs.com/"> https://github.com/gulpjs/gulp </a></li>
+                    <li><i class="fa fa-github"></i> Gulp : <a href="http://gulpjs.com/"> https://github.com/gulpjs/gulp </a></li>
+                    <li><i class="fa fa-font"></i> Font-Awesome : <a href="https://fortawesome.github.io/">https://fortawesome.github.io/</a></li>
                 </ul>
+
             </div>
         </div>
     </body>
