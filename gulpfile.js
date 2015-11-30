@@ -80,6 +80,11 @@ var path ={
         ],
         dist :"dist/"
     },
+    frontnote:{
+        overview:"overview.md",
+        watch   :["scss/**/*.scss","overview.md"],
+        dist    :"_doc",
+    }
 
 };
 
@@ -171,6 +176,16 @@ gulp.task("reload_server", function () {
     browser.reload();
 });
 
+/*
+ * Document
+ */
+gulp.task('doc', function() {
+    gulp.src(path.css.src)
+        .pipe($.frontnote({
+            out: path.frontnote.dist,
+            overview: path.frontnote.overview
+        }));
+});
 
 /*
  * FTP
@@ -200,13 +215,14 @@ gulp.task('default', [
         "ejs",
         //"html-min",
         //"imagemin",
+        "doc",
         "start_server"
 ], function () {
     gulp.watch(path.scss.watch,["sass","reload_server"]);
-    gulp.watch(path.css.watch,["cssmin","reload_server"]);
     gulp.watch(path.js.watch,["uglify","reload_server"]);
     //gulp.watch(path.html.watch,["htmlmin","reload_server"]);
     //gulp.watch(path.image.src,["imagemin","reload_server"]);
     gulp.watch(path.ejs.watch,["ejs","reload_server"]);
+    gulp.watch(path.frontnote.watch,["doc","reload_server"]);
 }
 );

@@ -1,16 +1,14 @@
 @charset "UTF-8";
 /*
 #overview
-common.css
+second.css
 
 comment
 */
 
 // Import
-$resetCSS :sanitize;
-@import "preset/_reset";
-@import "preset/_variable";
 @import "preset/_mixin";
+@import "preset/_variable";
 
 // MEDIA QUERY
 //-----------------------------------------------------
@@ -19,21 +17,21 @@ $resetCSS :sanitize;
 -------------------------------------------------- */
 @media screen and(max-width:$breakpoint_sp) {
     $type: sp;
-    @import "_common_media-query";
+    @import "_second_media-query";
 }
 
 /* Middle Display
 -------------------------------------------------- */
 @media screen and(max-width:$breakpoint_tb) {
     $type: tb;
-    @import "_common_media-query";
+    @import "_second_media-query";
 }
 
 /* Large Display
 -------------------------------------------------- */
 @media print, screen and (min-width:$breakpoint_pc) {
     $type: pc;
-    @import "_common_media-query";
+    @import "_second_media-query";
 }
 
 /* Print CSS
