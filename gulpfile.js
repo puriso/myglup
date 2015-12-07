@@ -96,18 +96,20 @@ var path ={
      * CSS Task
      */
     gulp.task("sass", function () {
-        return gulp.src(path.scss.src)
+        //sass
+        gulp.src(path.scss.src)
             .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [SASS ERROR] <%= error.message %>")}))
             .pipe($.sass())
             .pipe($.autoprefixer())
             .pipe(gulp.dest(path.scss.dist));
+
+        //cssmin
+        gulp.src(path.css.src)
+            .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [CSSMIN ERROR] <%= error.message %>")}))
+            .pipe($.cssmin())
+            .pipe(gulp.dest(path.css.dist));
     });
-gulp.task("cssmin", function () {
-    gulp.src(path.css.src)
-        .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [CSSMIN ERROR] <%= error.message %>")}))
-        .pipe($.cssmin())
-        .pipe(gulp.dest(path.css.dist));
-});
+
 gulp.task("uncss", function () {
     return gulp.src("css/*.css")
 
@@ -221,7 +223,7 @@ gulp.task('default', [
     gulp.watch(path.scss.watch,["sass","reload_server"]);
     gulp.watch(path.js.watch,["uglify","reload_server"]);
     //gulp.watch(path.html.watch,["htmlmin","reload_server"]);
-    //gulp.watch(path.image.src,["imagemin","reload_server"]);
+    gulp.watch(path.image.src,["imagemin","reload_server"]);
     gulp.watch(path.ejs.watch,["ejs","reload_server"]);
     gulp.watch(path.frontnote.watch,["doc","reload_server"]);
 }
