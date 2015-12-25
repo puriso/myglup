@@ -212,12 +212,12 @@ gulp.task("ftp", function () {
  -----------------------------------------------------------*/
 gulp.task('default', [
         "sass",
-        "cssmin",
+        //"cssmin",
         "uglify",
         "ejs",
         //"html-min",
         //"imagemin",
-        "doc",
+        //"doc",
         "start_server"
 ], function () {
     gulp.watch(path.scss.watch,["sass","reload_server"]);
@@ -225,6 +225,6 @@ gulp.task('default', [
     //gulp.watch(path.html.watch,["htmlmin","reload_server"]);
     gulp.watch(path.image.src,["imagemin","reload_server"]);
     gulp.watch(path.ejs.watch,["ejs","reload_server"]);
-    gulp.watch(path.frontnote.watch,["doc","reload_server"]);
+    //gulp.watch(path.frontnote.watch,["doc","reload_server"]);
 }
 );
