@@ -1,14 +1,8 @@
 @charset "UTF-8";
-/*
-#overview
-second.css
-
-comment
-*/
 
 // Import
-@import "preset/_mixin";
-@import "preset/_variable";
+@import "include/_mixin";
+@import "include/_variable";
 
 // MEDIA QUERY
 //-----------------------------------------------------
@@ -37,4 +31,5 @@ comment
 /* Print CSS
 -------------------------------------------------- */
 @media print {
+
 }

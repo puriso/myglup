@@ -1,18 +1,36 @@
+/*
+ *  Web Starter Kit
+ */
 "use strict";
 /*------------------------------------------------------------
- * require
+ * Include Gulp & Tools We'll Use
  -----------------------------------------------------------*/
 var gulp = require("gulp");
-var $ = require("gulp-load-plugins")({
+var $ = require("gulp-load-plugins")({ //require自動宣言
     pattern: ["gulp-*", "gulp.*"],
     replaceString: /\bgulp[\-.]/
 });
 var browser = require("browser-sync");
 
 /*------------------------------------------------------------
+ * Gulp Option
+ -----------------------------------------------------------*/
+var autoprefixer_opt = [
+    'ie >= 10',
+    'ie_mob >= 10',
+    'ff >= 30',
+    'chrome >= 34',
+    'safari >= 7',
+    'opera >= 23',
+    'ios >= 7',
+    'android >= 4.4',
+    'bb >= 10'
+];
+
+/*------------------------------------------------------------
  * PATH設定
  -----------------------------------------------------------*/
-//FTP(for Private repository)
+//FTP
 var ftpInfo ={
     host        :"",
     user        :"",
@@ -38,7 +56,8 @@ var path ={
         dir  :"scss/",
         src  :"scss/**/*.scss",
         watch:"scss/**/*.scss",
-        dist :"css/"
+        dist :"css/",
+
     },
     image:{
         dir  :"images/",
@@ -92,27 +111,21 @@ var path ={
  * TASKS
  -----------------------------------------------------------*/
 
-    /*
-     * CSS Task
-     */
-    gulp.task("sass", function () {
-        //sass
-        gulp.src(path.scss.src)
-            .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [SASS ERROR] <%= error.message %>")}))
-            .pipe($.sass())
-            .pipe($.autoprefixer())
-            .pipe(gulp.dest(path.scss.dist));
-
-        //cssmin
-        gulp.src(path.css.src)
-            .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [CSSMIN ERROR] <%= error.message %>")}))
-            .pipe($.cssmin())
-            .pipe(gulp.dest(path.css.dist));
-    });
+/*
+ * SCSS,CSS Task
+ */
+gulp.task("sass", function () {
+    //sass
+    gulp.src(path.scss.src)
+        .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [SASS ERROR] <%= error.message %>")}))
+        .pipe($.sass())
+        .pipe($.autoprefixer(autoprefixer_opt))
+        .pipe($.cssmin())
+        .pipe(gulp.dest(path.css.dist));
+});
 
 gulp.task("uncss", function () {
     return gulp.src("css/*.css")
-
         .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [UNCSS ERROR] <%= error.message %>")}))
         .pipe($.uncss(path.css.uncss))
         .pipe($.rename({
@@ -123,39 +136,38 @@ gulp.task("uncss", function () {
 
 
 /*
- * Image
+ * Images TASK
  */
-    gulp.task("imagemin",function(){
-        gulp.src(path.image.src)
-            .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [IMAGEMIN ERROR] <%= error.message %>")}))
-            .pipe($.imagemin())
-            .pipe(gulp.dest(path.image.dist));
-    });
+gulp.task("imagemin",function(){
+    gulp.src(path.image.src)
+        .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [IMAGEMIN ERROR] <%= error.message %>")}))
+        .pipe($.imagemin())
+        .pipe(gulp.dest(path.image.dist));
+});
 
 /*
  * JavaScript
  */
-            gulp.task("uglify", function(){
-                gulp.src(path.js.src)
-                    .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [UGLIFY(JS File) ERROR] <%= error.message %>")}))
-                    .pipe($.uglify({preserveComments: "some"}))
-                    .pipe(gulp.dest(path.js.dist));
-            });
-
+gulp.task("uglify", function(){
+    gulp.src(path.js.src)
+        .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [UGLIFY(JS File) ERROR] <%= error.message %>")}))
+        .pipe($.uglify({preserveComments: "some"}))
+        .pipe(gulp.dest(path.js.dist));
+});
 /*
  * HTML
  */
-    gulp.task("htmlmin", function() {
-        var opts = {
-            conditionals: true,
-            spare:true
-        };
-        return gulp.src(path.html.dist+"**/*.html")
-            .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [HTMLMIN ERROR]<%= error.message %>")}))
-            .pipe($.minifyHTML(opts))
-            .pipe($.minifyInline())
-            .pipe(gulp.dest(path.html.dist));
-    });
+gulp.task("htmlmin", function() {
+    var opts = {
+        conditionals: true,
+        spare:true
+    };
+    return gulp.src(path.html.dist+"**/*.html")
+        .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [HTMLMIN ERROR]<%= error.message %>")}))
+        .pipe($.minifyHTML(opts))
+        .pipe($.minifyInline())
+        .pipe(gulp.dest(path.html.dist));
+});
 gulp.task("ejs", function() {
     gulp.src(path.ejs.src)
         .pipe($.plumber({errorHandler: $.notify.onError("(;◡;) [EJS ERROR]<%= error.message %>")}))
@@ -167,26 +179,15 @@ gulp.task("ejs", function() {
 /*
  * Browser
  */
-    gulp.task("start_server", function() {
-        browser.init(null, {
-            server: {
-                baseDir: path.html.dist
-            }
-        });
+gulp.task("start_server", function() {
+    browser.init(null, {
+        server: {
+            baseDir: path.html.dist
+        }
     });
+});
 gulp.task("reload_server", function () {
     browser.reload();
-});
-
-/*
- * Document
- */
-gulp.task('doc', function() {
-    gulp.src(path.css.src)
-        .pipe($.frontnote({
-            out: path.frontnote.dist,
-            overview: path.frontnote.overview
-        }));
 });
 
 /*
@@ -212,12 +213,10 @@ gulp.task("ftp", function () {
  -----------------------------------------------------------*/
 gulp.task('default', [
         "sass",
-        //"cssmin",
         "uglify",
         "ejs",
         //"html-min",
-        //"imagemin",
-        //"doc",
+        "imagemin",
         "start_server"
 ], function () {
     gulp.watch(path.scss.watch,["sass","reload_server"]);
@@ -225,6 +224,4 @@ gulp.task('default', [
     //gulp.watch(path.html.watch,["htmlmin","reload_server"]);
     gulp.watch(path.image.src,["imagemin","reload_server"]);
     gulp.watch(path.ejs.watch,["ejs","reload_server"]);
-    //gulp.watch(path.frontnote.watch,["doc","reload_server"]);
-}
-);
+});

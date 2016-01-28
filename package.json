@@ -1,8 +1,8 @@
 {
   "name": "htdocs",
-  "version": "1.0.0",
-  "description": "![gulp logo](https://raw.githubusercontent.com/gulpjs/artwork/master/gulp.png)",
-  "main": "index.js",
+  "version": "1.1.0",
+  "description": "WEB STARTER KIT",
+  "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,7 +14,6 @@
     "gulp-autoprefixer": "^3.1.0",
     "gulp-cssmin": "^0.1.7",
     "gulp-ejs": "^1.2.1",
-    "gulp-frontnote": "^1.0.2",
     "gulp-ftp": "^1.1.0",
     "gulp-imagemin": "^2.3.0",
     "gulp-load-plugins": "^1.1.0",

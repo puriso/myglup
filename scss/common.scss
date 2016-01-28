@@ -1,16 +1,8 @@
 @charset "UTF-8";
-/*
-#overview
-common.css
-
-comment
-*/
-
 // Import
-$resetCSS :sanitize;
-@import "preset/_reset";
-@import "preset/_variable";
-@import "preset/_mixin";
+@import "include/_reset";
+@import "include/_variable";
+@import "include/_mixin";
 
 // MEDIA QUERY
 //-----------------------------------------------------

@@ -1,23 +1,11 @@
-//BASIC ELEMENTS
-//------------------------------------------------------
+// ------------------------------------------------------
+// BASIC ELEMENTS
+// ------------------------------------------------------
 html{
 	height: 100%;
     overflow-y:scroll;
 }
 
-/*
-#styleguide
-body
-
-@depulicated
-@非推奨
-@todo
-@your-attribute
-
-```
-sample code here.
-```
-*/
 body{
 	font-family: 'Meiryo','Hiragino Kaku Gothic ProN',sans-serif;
     background-color: #fff;
@@ -56,7 +44,9 @@ img{
 .forPC{	@if $type == sp{display: none!important;}}
 .forSP{	@if $type == pc{display: none!important;}}
 
-//--------------------------------------------------
+// ------------------------------------------------------
+// CONTENTS
+// ------------------------------------------------------
 h1{
     font-size: 20px;
 }
